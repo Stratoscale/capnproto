@@ -1,0 +1,23 @@
+all: build install
+
+.PHONY: submit
+submit:
+	$(Q) $(MAKE) submit
+
+approve:
+	solvent approve --product=rpm
+
+prepareForCleanBuild:
+	$(Q) $(MAKE) configure
+
+.PHONY: build
+build: 
+	$(Q) $(MAKE) build
+
+.PHONY: install
+install: 
+	$(Q) $(MAKE) install
+
+.PHONY: racktest
+racktest:
+	UPSETO_JOIN_PYTHON_NAMESPACES=yes PYTHONPATH=$(PWD)/py:$(PWD)/build/cpp python ../pyracktest/runner

@@ -36,3 +36,8 @@
 
 # cabal-install artifacts
 /compiler/dist/
+
+# Stratoscale stuff
+**/RCS/
+**/*.swp
+/build/
