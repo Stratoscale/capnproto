@@ -56,8 +56,12 @@ set(kj-parse_headers
 set(kj-std_headers
   std/iostream.h
 )
-add_library(kj ${kj_sources})
-install(TARGETS kj ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+add_library(kj-object OBJECT ${kj_sources})
+add_library(kj-static STATIC $<TARGET_OBJECTS:kj-object>)
+add_library(kj SHARED $<TARGET_OBJECTS:kj-object> )
+SET_TARGET_PROPERTIES(kj-static PROPERTIES OUTPUT_NAME "kj")
+install(TARGETS kj-static ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+install(TARGETS kj LIBRARY DESTINATION "${LIB_INSTALL_DIR}")
 install(FILES ${kj_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/kj")
 install(FILES ${kj-parse_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/kj/parse")
 install(FILES ${kj-std_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/kj/std")
@@ -77,9 +81,13 @@ set(kj-async_headers
   time.h
 )
 if(NOT CAPNP_LITE)
-  add_library(kj-async ${kj-async_sources})
+  add_library(kj-async-object OBJECT ${kj-async_sources})
+  add_library(kj-async-static STATIC $<TARGET_OBJECTS:kj-async-object>)
+  add_library(kj-async SHARED $<TARGET_OBJECTS:kj-async-object>)
+  SET_TARGET_PROPERTIES(kj-async-static PROPERTIES OUTPUT_NAME "kj-async")
   target_link_libraries(kj-async kj)
-  install(TARGETS kj-async ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+  install(TARGETS kj-async LIBRARY DESTINATION "${LIB_INSTALL_DIR}")
+  install(TARGETS kj-async-static ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
   install(FILES ${kj-async_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/kj")
 endif()
 

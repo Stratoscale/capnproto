@@ -78,7 +78,7 @@ else()
   #
   # We have to use -std=gnu++0x isntead of -std=c++11 because otherwise we lose
   # GNU extensions that we need.
-  set(CMAKE_CXX_FLAGS "-std=gnu++0x -Wall -Wextra -Wno-strict-aliasing -Wno-sign-compare -Wno-unused-parameter -pthread ${CAPNP_LITE_FLAG} ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++0x -Wall -Wextra -Wno-strict-aliasing -Wno-sign-compare -Wno-unused-parameter -pthread ${CAPNP_LITE_FLAG} ${CMAKE_CXX_FLAGS}")
 endif()
 
 # Source =======================================================================

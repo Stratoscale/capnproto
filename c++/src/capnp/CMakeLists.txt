@@ -49,10 +49,14 @@ set(capnp_headers
   pointer-helpers.h
   generated-header-support.h
 )
-add_library(capnp ${capnp_sources})
+add_library(capnp-object OBJECT ${capnp_sources})
+add_library(capnp-static STATIC $<TARGET_OBJECTS:capnp-object> )
+add_library(capnp SHARED $<TARGET_OBJECTS:capnp-object> )
+SET_TARGET_PROPERTIES(capnp-static PROPERTIES OUTPUT_NAME "capnp")
 target_link_libraries(capnp kj)
 
-install(TARGETS capnp ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+install(TARGETS capnp-static ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+install(TARGETS capnp LIBRARY DESTINATION "${LIB_INSTALL_DIR}")
 install(FILES ${capnp_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/capnp")
 
 set(capnp-rpc_sources
@@ -76,9 +80,13 @@ set(capnp-rpc_headers
   ez-rpc.h
 )
 if(NOT CAPNP_LITE)
-  add_library(capnp-rpc ${capnp-rpc_sources})
+  add_library(capnp-rpc-object OBJECT ${capnp-rpc_sources})
+  add_library(capnp-rpc-static STATIC $<TARGET_OBJECTS:capnp-rpc-object> )
+  add_library(capnp-rpc SHARED $<TARGET_OBJECTS:capnp-rpc-object> )
+  SET_TARGET_PROPERTIES(capnp-rpc-static PROPERTIES OUTPUT_NAME "capnp-rpc")
   target_link_libraries(capnp-rpc kj-async kj)
-  install(TARGETS capnp-rpc ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+  install(TARGETS capnp-rpc LIBRARY DESTINATION "${LIB_INSTALL_DIR}")
+  install(TARGETS capnp-rpc-static ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
   install(FILES ${capnp-rpc_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/capnp")
 endif()
 
@@ -103,9 +111,13 @@ set(capnpc_headers
   persistent.capnp
 )
 if(NOT CAPNP_LITE)
-  add_library(capnpc ${capnpc_sources})
+  add_library(capnpc-object OBJECT ${capnpc_sources})
+  add_library(capnpc-static STATIC $<TARGET_OBJECTS:capnpc-object> )
+  add_library(capnpc SHARED $<TARGET_OBJECTS:capnpc-object> )
+  SET_TARGET_PROPERTIES(capnpc-static PROPERTIES OUTPUT_NAME "capnpc")
   target_link_libraries(capnpc capnp kj)
-  install(TARGETS capnpc ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+  install(TARGETS capnpc LIBRARY DESTINATION "${LIB_INSTALL_DIR}")
+  install(TARGETS capnpc-static ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
   install(FILES ${capnpc_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/capnp")
 endif()
 
