@@ -23,7 +23,7 @@ install: build
 
 .PHONY: submit
 submit: rpm
-	$(Q)solvent submitproduct rpm build/rpm
+	$(Q)solvent submitproduct rpms build/rpm
 
 .PHONY: clean
 clean:
